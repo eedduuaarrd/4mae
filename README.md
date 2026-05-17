@@ -20,9 +20,32 @@ npm run preview
 
 ## Llista d'espera
 
-Per defecte, els emails es guarden a `localStorage` del navegador i el comptador s'actualitza en temps real.
+Cada inscripció es guarda a:
 
-Per enviar emails a un servei extern, crea `.env`:
+1. **`data/waitlist.csv`** (local, amb `npm run dev`)
+2. **CSV a Vercel Blob** (producció a Vercel)
+3. **`localStorage`** del navegador (comptador en temps real)
+
+### CSV local (desenvolupament)
+
+Amb `npm run dev`, els correus s'afegeixen a `data/waitlist.csv`:
+
+```csv
+email,source,joinedAt
+usuari@exemple.cat,hero,2026-05-17T10:00:00.000Z
+```
+
+### CSV a Vercel (producció)
+
+1. Al projecte Vercel: **Storage → Create Database → Blob**
+2. Redesplega (es crea sol `BLOB_READ_WRITE_TOKEN`)
+3. Opcional: descarrega el CSV amb clau d'admin:
+   - Variable `WAITLIST_ADMIN_SECRET=una-clau-segura`
+   - `GET https://el-teu-domini.vercel.app/api/waitlist` amb capçalera `x-admin-key: una-clau-segura`
+
+### Formspree (opcional)
+
+Per rebre també un email per inscripció:
 
 ```env
 VITE_WAITLIST_ENDPOINT=https://formspree.io/f/el_teu_id
@@ -44,6 +67,8 @@ npm run preview:pages
 El workflow `.github/workflows/deploy.yml` publica automàticament a **https://eedduuaarrd.github.io/4mae/** (amb `VITE_BASE_PATH=/4mae/` al build).
 
 Al repositori de GitHub: **Settings → Pages → Build and deployment → GitHub Actions**.
+
+A GitHub Pages (només estàtics) el CSV **no** es guarda al servidor; només `localStorage`. Per recollir correus en CSV, usa **Vercel** amb Blob.
 
 ## Stack
 

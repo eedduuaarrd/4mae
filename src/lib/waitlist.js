@@ -29,6 +29,35 @@ function saveLocally(norm, source) {
   return true;
 }
 
+async function postToCsvApi(norm, source) {
+  const res = await fetch("/api/waitlist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      email: norm,
+      source,
+      joinedAt: new Date().toISOString(),
+    }),
+  });
+
+  if (res.status === 409) {
+    return { ok: false, duplicate: true };
+  }
+
+  if (!res.ok) {
+    let message = "No s'ha pogut registrar. Torna-ho a provar.";
+    try {
+      const data = await res.json();
+      if (data.error) message = data.error;
+    } catch {
+      /* ignore */
+    }
+    return { ok: false, error: message };
+  }
+
+  return { ok: true };
+}
+
 async function postToEndpoint(endpoint, norm, source) {
   const isFormspree = endpoint.includes("formspree.io");
 
@@ -67,13 +96,30 @@ export async function joinWaitlist(email, source = "landing") {
     return { ok: false, error: "Aquest email ja està a la llista" };
   }
 
+  const staticHost =
+    typeof window !== "undefined" && window.location.hostname.endsWith("github.io");
+
+  try {
+    const csvResult = await postToCsvApi(norm, source);
+    if (!csvResult.ok) {
+      return {
+        ok: false,
+        error: csvResult.duplicate ? "Aquest email ja està a la llista" : csvResult.error,
+      };
+    }
+  } catch {
+    if (!staticHost) {
+      return { ok: false, error: "Error de connexió. Comprova la xarxa." };
+    }
+  }
+
   const endpoint = import.meta.env.VITE_WAITLIST_ENDPOINT?.trim();
 
   if (endpoint) {
     try {
       const sent = await postToEndpoint(endpoint, norm, source);
       if (!sent) {
-        return { ok: false, error: "No s'ha pogut registrar. Torna-ho a provar." };
+        return { ok: false, error: "No s'ha pogut enviar a Formspree. Torna-ho a provar." };
       }
     } catch {
       return { ok: false, error: "Error de connexió. Comprova la xarxa." };
