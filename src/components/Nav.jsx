@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import { NAV_LINKS } from "../data/content";
+import { scrollToSection, scrollToTop } from "../lib/scroll";
 
-function scrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-}
-
-export default function Nav({ onWaitlist }) {
+export default function Nav({ onWaitlist, activeId }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -24,7 +21,7 @@ export default function Nav({ onWaitlist }) {
 
   const go = (id) => {
     setOpen(false);
-    scrollTo(id);
+    scrollToSection(id);
   };
 
   return (
@@ -33,19 +30,24 @@ export default function Nav({ onWaitlist }) {
         Saltar al contingut
       </a>
       <nav className={scrolled ? "s" : ""} aria-label="Navegació principal">
-        <button type="button" className="brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <button type="button" className="brand" onClick={scrollToTop}>
           4mæ
         </button>
         <div className="nav-r">
           <div className="nav-links desk-only">
             {NAV_LINKS.map((l) => (
-              <button key={l.id} type="button" className="nav-link" onClick={() => go(l.id)}>
+              <button
+                key={l.id}
+                type="button"
+                className={`nav-link${activeId === l.id ? " active" : ""}`}
+                onClick={() => go(l.id)}
+              >
                 {l.label}
               </button>
             ))}
           </div>
           <div className="nav-pill desk-only">Beta oberta aviat</div>
-          <button type="button" className="nav-cta" onClick={onWaitlist}>
+          <button type="button" className="nav-cta desk-only" onClick={onWaitlist}>
             Accés anticipat
           </button>
           <button
@@ -65,7 +67,12 @@ export default function Nav({ onWaitlist }) {
       <div className={`nav-drawer${open ? " open" : ""}`} aria-hidden={!open}>
         <div className="nav-drawer-inner">
           {NAV_LINKS.map((l) => (
-            <button key={l.id} type="button" className="nav-drawer-link" onClick={() => go(l.id)}>
+            <button
+              key={l.id}
+              type="button"
+              className={`nav-drawer-link${activeId === l.id ? " active" : ""}`}
+              onClick={() => go(l.id)}
+            >
               {l.label}
             </button>
           ))}

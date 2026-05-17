@@ -5,7 +5,7 @@ export default function PlanWeek() {
   const [ref, inView] = useInView({ threshold: 0.2 });
 
   return (
-    <div ref={ref}>
+    <div className="plan-week" ref={ref}>
       <div className="wk">
         <div className="wk-hd">
           <span className="wk-title">Setmana 8 · Preparació Marató BCN</span>
@@ -33,14 +33,14 @@ export default function PlanWeek() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="adapt-box">
-        <span style={{ fontSize: 16 }} aria-hidden>
-          ⚡
-        </span>
-        <div className="adapt-txt">
-          Pla adaptat avui: HRV baix detectat (41ms vs mitjana 58ms). Sèries de dimecres reduïdes de 6×1km a
-          5×1km. Tirada de diumenge mantinguda en Z2.
+        <div className="adapt-box">
+          <span className="adapt-ico" aria-hidden>
+            ⚡
+          </span>
+          <div className="adapt-txt">
+            Pla adaptat avui: HRV baix detectat (41ms vs mitjana 58ms). Sèries de dimecres reduïdes de 6×1km a
+            5×1km. Tirada de diumenge mantinguda en Z2.
+          </div>
         </div>
       </div>
     </div>

@@ -5,11 +5,15 @@ export default function FaqItem({ q, a, open, onToggle }) {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    if (open && innerRef.current) {
-      setHeight(innerRef.current.scrollHeight);
-    } else {
-      setHeight(0);
-    }
+    const el = innerRef.current;
+    if (!el) return;
+
+    const measure = () => setHeight(open ? el.scrollHeight : 0);
+    measure();
+
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, [open, a]);
 
   return (
@@ -23,6 +27,7 @@ export default function FaqItem({ q, a, open, onToggle }) {
       <div
         className="fi-a"
         style={{ maxHeight: open ? height : 0, paddingBottom: open ? 24 : 0 }}
+        aria-hidden={!open}
       >
         <div ref={innerRef}>{a}</div>
       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Nav from "./components/Nav";
 import WaitlistForm from "./components/WaitlistForm";
 import LegalModal from "./components/LegalModal";
@@ -6,7 +6,9 @@ import Reveal from "./components/Reveal";
 import FaqItem from "./components/FaqItem";
 import PlanWeek from "./components/PlanWeek";
 import { useCountUp } from "./hooks/useCountUp";
+import { useActiveSection } from "./hooks/useActiveSection";
 import { getSignupCount } from "./lib/waitlist";
+import { scrollToSection } from "./lib/scroll";
 import {
   TICKERS,
   STATS,
@@ -22,15 +24,11 @@ import {
   PRICING_PRO,
   PRICING_BETA,
   LEGAL,
+  NAV_LINKS,
 } from "./data/content";
 
-function scrollToWaitlist() {
-  document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
-}
-
-function scrollToMain() {
-  document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" });
-}
+const scrollToWaitlist = () => scrollToSection("waitlist");
+const scrollToMain = () => scrollToSection("problema");
 
 export default function App() {
   const [signupCount, setSignupCount] = useState(getSignupCount);
@@ -39,6 +37,8 @@ export default function App() {
   const [sportQuery, setSportQuery] = useState("");
 
   const count = useCountUp(signupCount);
+  const sectionIds = useMemo(() => NAV_LINKS.map((l) => l.id), []);
+  const activeSection = useActiveSection(sectionIds);
 
   const refreshCount = useCallback(() => setSignupCount(getSignupCount()), []);
 
@@ -52,7 +52,7 @@ export default function App() {
 
   return (
     <>
-      <Nav onWaitlist={scrollToWaitlist} />
+      <Nav onWaitlist={scrollToWaitlist} activeId={activeSection} />
       <main id="main">
         <section className="hero">
           <div className="hero-noise" aria-hidden />
@@ -75,6 +75,7 @@ export default function App() {
               source="hero"
               compact
               buttonLabel="Accés anticipat gratuït"
+              successMessage="✓ Perfecte! Et notifiquem quan obrim."
               note="Sense targeta de crèdit · Gratuït per als primers usuaris · Cancel·la quan vulguis"
               onSuccess={refreshCount}
             />
@@ -210,7 +211,7 @@ export default function App() {
                   <div className="wc-desc">{w.desc}</div>
                   <div className="wc-tags">
                     {w.tags.map((t) => (
-                      <span className={w.coming ? "coming-tag" : "wc-tag"} key={t}>
+                      <span className="wc-tag" key={t}>
                         {t}
                       </span>
                     ))}
@@ -395,7 +396,7 @@ export default function App() {
 
         <section className="sec" id="faq">
           <div className="faq-layout">
-            <Reveal className="faq-sticky">
+            <Reveal instant className="faq-sticky">
               <div className="eyebrow">FAQ</div>
               <h2 className="sec-title" style={{ marginBottom: 20 }}>
                 Preguntes

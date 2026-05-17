@@ -1,32 +1,39 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useCountUp(target, { delay = 1300, enabled = true } = {}) {
+export function useCountUp(target, { delay = 1300, duration = 900 } = {}) {
   const [count, setCount] = useState(0);
+  const prevTarget = useRef(0);
   const frame = useRef(null);
 
   useEffect(() => {
-    if (!enabled) {
-      setCount(target);
-      return;
-    }
-    let current = 0;
-    const step = () => {
-      current += Math.max(1, Math.ceil((target - current) / 8));
-      if (current >= target) {
-        setCount(target);
+    const start = prevTarget.current;
+    prevTarget.current = target;
+    const diff = target - start;
+    if (diff === 0) return;
+
+    const startTime = performance.now() + delay;
+
+    const tick = (now) => {
+      if (now < startTime) {
+        frame.current = requestAnimationFrame(tick);
         return;
       }
-      setCount(current);
-      frame.current = requestAnimationFrame(step);
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = 1 - (1 - progress) ** 3;
+      setCount(Math.round(start + diff * eased));
+      if (progress < 1) {
+        frame.current = requestAnimationFrame(tick);
+      } else {
+        setCount(target);
+      }
     };
-    const t = setTimeout(() => {
-      frame.current = requestAnimationFrame(step);
-    }, delay);
+
+    frame.current = requestAnimationFrame(tick);
     return () => {
-      clearTimeout(t);
       if (frame.current) cancelAnimationFrame(frame.current);
     };
-  }, [target, delay, enabled]);
+  }, [target, delay, duration]);
 
   return count;
 }

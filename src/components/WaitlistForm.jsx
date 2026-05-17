@@ -5,6 +5,7 @@ export default function WaitlistForm({
   source,
   placeholder = "el.teu@email.com",
   buttonLabel = "Vull accés anticipat",
+  successMessage = "✓ Perfecte! Et contactem ben aviat.",
   inputClassName = "h-input",
   compact = false,
   note,
@@ -15,7 +16,9 @@ export default function WaitlistForm({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e?.preventDefault();
+    if (loading) return;
     setLoading(true);
     setError("");
     const result = await joinWaitlist(email, source);
@@ -30,37 +33,42 @@ export default function WaitlistForm({
   };
 
   if (success) {
-    return <div className="ok">✓ Perfecte! Et contactem ben aviat.</div>;
+    return <div className="ok">{successMessage}</div>;
   }
 
+  const formClass = compact ? "h-form waitlist-form" : "cta-form waitlist-form";
+
   return (
-    <>
-      <div className={compact ? "h-form" : "cta-form"}>
+    <div className="waitlist-wrap">
+      <form className={formClass} onSubmit={handleSubmit} noValidate>
         <input
           className={inputClassName}
           style={compact ? undefined : { maxWidth: 300 }}
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder={placeholder}
           value={email}
           disabled={loading}
-          onChange={(e) => {
-            setEmail(e.target.value);
+          onChange={(ev) => {
+            setEmail(ev.target.value);
             setError("");
           }}
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           aria-label="Email llista d'espera"
           aria-invalid={!!error}
+          aria-describedby={error ? `waitlist-err-${source}` : undefined}
         />
-        <button type="button" className={`btn${loading ? " loading" : ""}`} disabled={loading} onClick={handleSubmit}>
+        <button type="submit" className={`btn${loading ? " loading" : ""}`} disabled={loading}>
           {loading ? "Enviant…" : buttonLabel}
         </button>
-      </div>
+      </form>
       {error && (
-        <p className="err" role="alert">
+        <p id={`waitlist-err-${source}`} className="err" role="alert">
           {error}
         </p>
       )}
       {note && <p className="h-note">{note}</p>}
-    </>
+    </div>
   );
 }
+

@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 88px;
 }
 
 body {
@@ -741,15 +742,23 @@ nav.s {
   transition: width 0.6s;
 }
 
+.plan-week .wk {
+  border-radius: 8px;
+}
+
 .adapt-box {
-  margin-top: 10px;
   background: var(--ad);
-  border: 1px solid rgba(200, 255, 0, 0.18);
-  border-radius: 0 0 8px 8px;
+  border-top: 1px solid rgba(200, 255, 0, 0.18);
   padding: 14px 28px;
   display: flex;
   gap: 12px;
   align-items: flex-start;
+}
+
+.adapt-ico {
+  font-size: 16px;
+  line-height: 1.4;
+  flex-shrink: 0;
 }
 
 .adapt-txt {
@@ -896,7 +905,7 @@ nav.s {
 }
 
 .crs {
-  color: #2a2a2a;
+  color: var(--m);
 }
 
 .prt {
@@ -1306,6 +1315,25 @@ nav.s {
   font-weight: 500;
 }
 
+.waitlist-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.waitlist-wrap .err {
+  margin-top: 10px;
+}
+
+.waitlist-form {
+  opacity: 0;
+  animation: fu 0.8s 0.5s forwards;
+}
+
+.cta-form.waitlist-form {
+  opacity: 1;
+  animation: none;
+}
+
 .err {
   font-size: 12px;
   color: #ff6b6b;
@@ -1428,9 +1456,19 @@ footer {
   transition: color 0.2s, background 0.2s;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-drawer-link:hover {
   color: var(--t);
   background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-link.active,
+.nav-drawer-link.active {
+  color: var(--a);
+}
+
+.nav-drawer-link.active {
+  background: var(--ad);
 }
 
 .nav-toggle {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useInView(options = {}) {
+export function useInView({ threshold = 0.15, rootMargin = "0px", once = true } = {}) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
 
@@ -12,17 +12,17 @@ export function useInView(options = {}) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          if (options.once !== false) observer.disconnect();
-        } else if (!options.once) {
+          if (once) observer.disconnect();
+        } else if (!once) {
           setInView(false);
         }
       },
-      { threshold: options.threshold ?? 0.15, rootMargin: options.rootMargin ?? "0px" }
+      { threshold, rootMargin }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [options.threshold, options.rootMargin, options.once]);
+  }, [threshold, rootMargin, once]);
 
   return [ref, inView];
 }

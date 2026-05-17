@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eedduuaarrd.github.io/4mae/sitemap.xml

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "build:pages": "vite build --mode production",
+    "preview": "vite preview",
+    "preview:pages": "vite preview --base /4mae/"
   },
   "devDependencies": {
     "@types/react": "^19.2.14",

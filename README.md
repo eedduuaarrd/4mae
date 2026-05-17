@@ -30,11 +30,14 @@ VITE_WAITLIST_ENDPOINT=https://formspree.io/f/el_teu_id
 
 ## Deploy (GitHub Pages)
 
-El workflow `.github/workflows/deploy.yml` publica automàticament a:
+```bash
+npm run build:pages
+npm run preview:pages
+```
 
-**https://eedduuaarrd.github.io/4mae/**
+El workflow `.github/workflows/deploy.yml` publica automàticament a **https://eedduuaarrd.github.io/4mae/**
 
-Cal activar **GitHub Pages → Source: GitHub Actions** al repositori.
+Al repositori de GitHub: **Settings → Pages → Build and deployment → GitHub Actions**.
 
 ## Stack
 
