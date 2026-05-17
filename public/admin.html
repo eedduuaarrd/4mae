@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>4mæ — Llista d'espera</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080808;
+        --s1: #0f0f0f;
+        --bd: #1f1f1f;
+        --t: #efefef;
+        --m: #888;
+        --a: #c8ff00;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--t);
+        min-height: 100vh;
+        padding: 24px 20px 48px;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 42px;
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
+      }
+      h1 span {
+        color: var(--a);
+      }
+      .sub {
+        color: var(--m);
+        font-size: 14px;
+        margin-bottom: 28px;
+      }
+      .panel {
+        background: var(--s1);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--m);
+        margin-bottom: 8px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      input[type="password"],
+      input[type="search"] {
+        flex: 1;
+        min-width: 200px;
+        background: var(--bg);
+        border: 1px solid var(--bd);
+        color: var(--t);
+        padding: 12px 14px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 15px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--a);
+      }
+      button {
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 18px;
+        background: var(--a);
+        color: #080808;
+      }
+      button.ghost {
+        background: transparent;
+        color: var(--t);
+        border: 1px solid var(--bd);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .stats {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .stat-n {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 36px;
+        color: var(--a);
+        line-height: 1;
+      }
+      .stat-l {
+        font-size: 12px;
+        color: var(--m);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+        align-items: center;
+      }
+      .toolbar input[type="search"] {
+        min-width: 240px;
+        flex: 2;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--bd);
+      }
+      th {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--m);
+        font-weight: 500;
+      }
+      tr:hover td {
+        background: rgba(200, 255, 0, 0.04);
+      }
+      td a {
+        color: var(--a);
+        text-decoration: none;
+      }
+      .empty,
+      .err {
+        padding: 32px;
+        text-align: center;
+        color: var(--m);
+      }
+      .err {
+        color: #ff6b6b;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 640px) {
+        th:nth-child(2),
+        td:nth-child(2) {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>4m<span>æ</span> · Waitlist</h1>
+      <p class="sub">Consulta i exporta els correus de la llista d'espera.</p>
+
+      <section class="panel" id="login-panel">
+        <label for="admin-key">Clau d'administració</label>
+        <div class="row">
+          <input id="admin-key" type="password" placeholder="WAITLIST_ADMIN_SECRET" autocomplete="off" />
+          <button type="button" id="btn-login">Entrar</button>
+        </div>
+        <p class="err hidden" id="login-err" style="margin-top: 12px; text-align: left"></p>
+      </section>
+
+      <section class="hidden" id="main-panel">
+        <div class="panel">
+          <div class="stats">
+            <div>
+              <div class="stat-n" id="stat-count">0</div>
+              <div class="stat-l">Inscripcions</div>
+            </div>
+            <div>
+              <div class="stat-n" id="stat-shown" style="color: var(--t)">0</div>
+              <div class="stat-l">Mostrats</div>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input type="search" id="search" placeholder="Cerca per email o font…" />
+            <button type="button" id="btn-refresh" class="ghost">Actualitzar</button>
+            <button type="button" id="btn-csv">Descarregar CSV</button>
+            <button type="button" id="btn-logout" class="ghost">Sortir</button>
+          </div>
+          <div id="table-wrap">
+            <p class="empty">Carregant…</p>
+          </div>
+        </div>
+        <p class="sub" id="updated-at"></p>
+      </section>
+    </div>
+
+    <script>
+      const KEY_STORAGE = "4mae_admin_key";
+      const $ = (id) => document.getElementById(id);
+
+      let entries = [];
+
+      function getKey() {
+        return sessionStorage.getItem(KEY_STORAGE) || "";
+      }
+
+      function setKey(value) {
+        if (value) sessionStorage.setItem(KEY_STORAGE, value);
+        else sessionStorage.removeItem(KEY_STORAGE);
+      }
+
+      async function fetchEntries() {
+        const res = await fetch("/api/waitlist?format=json", {
+          headers: { "x-admin-key": getKey() },
+        });
+        if (res.status === 401) throw new Error("Clau incorrecta");
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Error carregant dades");
+        }
+        return res.json();
+      }
+
+      function formatDate(iso) {
+        try {
+          return new Date(iso).toLocaleString("ca-ES", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          });
+        } catch {
+          return iso;
+        }
+      }
+
+      function renderTable(filter = "") {
+        const q = filter.trim().toLowerCase();
+        const rows = entries.filter(
+          (e) => !q || e.email.includes(q) || e.source.toLowerCase().includes(q)
+        );
+        $("stat-count").textContent = entries.length;
+        $("stat-shown").textContent = rows.length;
+
+        if (rows.length === 0) {
+          $("table-wrap").innerHTML = '<p class="empty">Cap inscripció encara.</p>';
+          return;
+        }
+
+        const html = `
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Font</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (e) => `
+                <tr>
+                  <td><a href="mailto:${e.email}">${e.email}</a></td>
+                  <td>${e.source}</td>
+                  <td>${formatDate(e.joinedAt)}</td>
+                </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>`;
+        $("table-wrap").innerHTML = html;
+      }
+
+      async function loadData() {
+        $("table-wrap").innerHTML = '<p class="empty">Carregant…</p>';
+        try {
+          const data = await fetchEntries();
+          entries = data.entries || [];
+          $("updated-at").textContent = data.updatedAt
+            ? `Actualitzat: ${formatDate(data.updatedAt)}`
+            : "";
+          renderTable($("search").value);
+        } catch (e) {
+          $("table-wrap").innerHTML = `<p class="err">${e.message}</p>`;
+          if (e.message === "Clau incorrecta") logout();
+        }
+      }
+
+      function showMain() {
+        $("login-panel").classList.add("hidden");
+        $("main-panel").classList.remove("hidden");
+      }
+
+      function logout() {
+        setKey("");
+        entries = [];
+        $("login-panel").classList.remove("hidden");
+        $("main-panel").classList.add("hidden");
+        $("admin-key").value = "";
+      }
+
+      async function login() {
+        const key = $("admin-key").value.trim();
+        if (!key) return;
+        setKey(key);
+        $("login-err").classList.add("hidden");
+        try {
+          await fetchEntries();
+          showMain();
+          await loadData();
+        } catch {
+          setKey("");
+          $("login-err").textContent = "Clau incorrecta. Revisa WAITLIST_ADMIN_SECRET a Vercel.";
+          $("login-err").classList.remove("hidden");
+        }
+      }
+
+      function downloadCsv() {
+        const key = getKey();
+        const a = document.createElement("a");
+        a.href = `/api/waitlist?key=${encodeURIComponent(key)}`;
+        a.download = "waitlist.csv";
+        a.click();
+      }
+
+      $("btn-login").addEventListener("click", login);
+      $("admin-key").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") login();
+      });
+      $("btn-logout").addEventListener("click", logout);
+      $("btn-refresh").addEventListener("click", loadData);
+      $("btn-csv").addEventListener("click", downloadCsv);
+      $("search").addEventListener("input", (e) => renderTable(e.target.value));
+
+      if (getKey()) {
+        showMain();
+        loadData();
+      }
+    </script>
+  </body>
+</html>

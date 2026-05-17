@@ -39,9 +39,21 @@ usuari@exemple.cat,hero,2026-05-17T10:00:00.000Z
 
 1. Al projecte Vercel: **Storage → Create Database → Blob**
 2. Redesplega (es crea sol `BLOB_READ_WRITE_TOKEN`)
-3. Opcional: descarrega el CSV amb clau d'admin:
-   - Variable `WAITLIST_ADMIN_SECRET=una-clau-segura`
-   - `GET https://el-teu-domini.vercel.app/api/waitlist` amb capçalera `x-admin-key: una-clau-segura`
+3. Variable `WAITLIST_ADMIN_SECRET=una-clau-segura` a Vercel
+
+### Consultar correus (recomanat)
+
+Obre el **panell d'admin** (taula + cerca + exportació):
+
+**https://farre.vercel.app/admin.html**
+
+Introdueix la clau `WAITLIST_ADMIN_SECRET`. Pots descarregar `waitlist.csv` (compatible amb Excel).
+
+Alternativa per línia de comandes:
+
+```bash
+curl -H "x-admin-key: LA_TEVA_CLAU" "https://farre.vercel.app/api/waitlist" -o waitlist.csv
+```
 
 ### Formspree (opcional)
 
