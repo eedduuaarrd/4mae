@@ -5,6 +5,7 @@ import LegalModal from "./components/LegalModal";
 import Reveal from "./components/Reveal";
 import FaqItem from "./components/FaqItem";
 import PlanWeek from "./components/PlanWeek";
+import ComparisonTable from "./components/ComparisonTable";
 import { useCountUp } from "./hooks/useCountUp";
 import { useActiveSection } from "./hooks/useActiveSection";
 import { getSignupCount } from "./lib/waitlist";
@@ -18,7 +19,6 @@ import {
   PROBLEMS,
   STEPS,
   PLAN_FEATURES,
-  COMPARISON_ROWS,
   TESTIMONIALS,
   PRICING_FREE,
   PRICING_PRO,
@@ -71,6 +71,10 @@ export default function App() {
               4mæ connecta amb el teu wearable, analitza com estàs de veritat i genera un pla que s&apos;adapta
               cada setmana — o cada dia, si cal.
             </p>
+            <div className="h-badge-mobile" aria-live="polite">
+              <span className="h-badge-num">{count}</span>
+              <span className="h-badge-lbl">persones ja inscrites</span>
+            </div>
             <WaitlistForm
               source="hero"
               compact
@@ -231,37 +235,7 @@ export default function App() {
               i no una altra?
             </h2>
           </Reveal>
-          <div className="tbl-wrap">
-            <table className="tbl">
-              <thead>
-                <tr>
-                  <th style={{ width: "26%" }}>Funcionalitat</th>
-                  <th className="hl">4mæ</th>
-                  <th>TrainingPeaks</th>
-                  <th>Nike Run Club</th>
-                  <th>Entrenador personal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON_ROWS.map(([fn, ...vs]) => (
-                  <tr key={fn}>
-                    <td className="fn">{fn}</td>
-                    {vs.map((v, i) => (
-                      <td key={i} className={i === 0 ? "hl" : ""}>
-                        {v === "✓" ? (
-                          <span className="chk">✓</span>
-                        ) : v === "✗" ? (
-                          <span className="crs">—</span>
-                        ) : (
-                          <span className="prt">{v}</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <ComparisonTable />
           <p className="tbl-note">*Gratuït durant la beta. Pla premium previst a 7–9€/mes al llançament.</p>
         </section>
 

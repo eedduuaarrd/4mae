@@ -8,7 +8,7 @@ export default function WaitlistForm({
   successMessage = "✓ Perfecte! Et contactem ben aviat.",
   inputClassName = "h-input",
   compact = false,
-  note,
+  note = undefined,
   onSuccess,
 }) {
   const [email, setEmail] = useState("");
@@ -42,8 +42,7 @@ export default function WaitlistForm({
     <div className="waitlist-wrap">
       <form className={formClass} onSubmit={handleSubmit} noValidate>
         <input
-          className={inputClassName}
-          style={compact ? undefined : { maxWidth: 300 }}
+          className={`${inputClassName}${compact ? "" : " cta-input"}`}
           type="email"
           name="email"
           autoComplete="email"
