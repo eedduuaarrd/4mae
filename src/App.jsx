@@ -6,6 +6,7 @@ import Reveal from "./components/Reveal";
 import FaqItem from "./components/FaqItem";
 import PlanWeek from "./components/PlanWeek";
 import ComparisonTable from "./components/ComparisonTable";
+import Section, { SectionHead } from "./components/Section";
 import { useCountUp } from "./hooks/useCountUp";
 import { useActiveSection } from "./hooks/useActiveSection";
 import { getSignupCount } from "./lib/waitlist";
@@ -114,15 +115,12 @@ export default function App() {
           ))}
         </div>
 
-        <section className="sec" id="problema">
-          <Reveal>
-            <div className="eyebrow">El problema</div>
-            <h2 className="sec-title">
-              Els plans genèrics
-              <br />
-              no <em>funcionen</em>
-            </h2>
-          </Reveal>
+        <Section id="problema">
+          <SectionHead eyebrow="El problema">
+            Els plans genèrics
+            <br />
+            no <em>funcionen</em>
+          </SectionHead>
           <div className="prob-grid">
             {PROBLEMS.map((c, i) => (
               <Reveal key={c.n} delay={i * 80}>
@@ -134,17 +132,14 @@ export default function App() {
               </Reveal>
             ))}
           </div>
-        </section>
+        </Section>
 
-        <section className="sec-s" id="com-funciona">
-          <Reveal>
-            <div className="eyebrow">Com funciona</div>
-            <h2 className="sec-title">
-              Quatre passos.
-              <br />
-              Un pla <em>perfecte.</em>
-            </h2>
-          </Reveal>
+        <Section id="com-funciona" variant="alt">
+          <SectionHead eyebrow="Com funciona">
+            Quatre passos.
+            <br />
+            Un pla <em>perfecte.</em>
+          </SectionHead>
           <div className="steps">
             {STEPS.map((s, i) => (
               <Reveal key={s.t} delay={i * 70}>
@@ -157,17 +152,14 @@ export default function App() {
               </Reveal>
             ))}
           </div>
-        </section>
+        </Section>
 
-        <section className="sec" id="pla">
-          <Reveal>
-            <div className="eyebrow">El teu pla, en temps real</div>
-            <h2 className="sec-title">
-              Així s&apos;assembla
-              <br />
-              un pla de <em>4mæ</em>
-            </h2>
-          </Reveal>
+        <Section id="pla">
+          <SectionHead eyebrow="El teu pla, en temps real">
+            Així s&apos;assembla
+            <br />
+            un pla de <em>4mæ</em>
+          </SectionHead>
           <div className="plan-l">
             <Reveal>
               <div>
@@ -192,17 +184,14 @@ export default function App() {
               <PlanWeek />
             </Reveal>
           </div>
-        </section>
+        </Section>
 
-        <section className="sec-s" id="integracions">
-          <Reveal>
-            <div className="eyebrow">Integracions</div>
-            <h2 className="sec-title">
-              Connecta el que
-              <br />
-              ja <em>fas servir</em>
-            </h2>
-          </Reveal>
+        <Section id="integracions" variant="alt">
+          <SectionHead eyebrow="Integracions">
+            Connecta el que
+            <br />
+            ja <em>fas servir</em>
+          </SectionHead>
           <div className="wear-grid">
             {WEARABLES.map((w, i) => (
               <Reveal key={w.name} delay={i * 60}>
@@ -224,30 +213,24 @@ export default function App() {
               </Reveal>
             ))}
           </div>
-        </section>
+        </Section>
 
-        <section className="sec" id="comparativa">
-          <Reveal>
-            <div className="eyebrow">Comparativa</div>
-            <h2 className="sec-title">
-              Per què <em>4mæ</em>
-              <br />
-              i no una altra?
-            </h2>
-          </Reveal>
+        <Section id="comparativa">
+          <SectionHead eyebrow="Comparativa">
+            Per què <em>4mæ</em>
+            <br />
+            i no una altra?
+          </SectionHead>
           <ComparisonTable />
           <p className="tbl-note">*Gratuït durant la beta. Pla premium previst a 7–9€/mes al llançament.</p>
-        </section>
+        </Section>
 
-        <section className="sec-s2" id="testimonis">
-          <Reveal>
-            <div className="eyebrow">Primers usuaris beta</div>
-            <h2 className="sec-title">
-              El que diuen
-              <br />
-              els que ho <em>proven</em>
-            </h2>
-          </Reveal>
+        <Section id="testimonis" variant="muted">
+          <SectionHead eyebrow="Primers usuaris beta">
+            El que diuen
+            <br />
+            els que ho <em>proven</em>
+          </SectionHead>
           <div className="test-grid">
             {TESTIMONIALS.map((t, i) => (
               <Reveal key={t.name} delay={i * 80}>
@@ -266,17 +249,14 @@ export default function App() {
               </Reveal>
             ))}
           </div>
-        </section>
+        </Section>
 
-        <section className="sec" id="esports">
-          <Reveal>
-            <div className="eyebrow">Per a tot tipus d&apos;esportista</div>
-            <h2 className="sec-title">
-              El teu esport.
-              <br />
-              <em>Sigui quin sigui.</em>
-            </h2>
-          </Reveal>
+        <Section id="esports">
+          <SectionHead eyebrow="Per a tot tipus d'esportista">
+            El teu esport.
+            <br />
+            <em>Sigui quin sigui.</em>
+          </SectionHead>
           <div className="sport-search-wrap">
             <input
               type="search"
@@ -299,17 +279,14 @@ export default function App() {
               ))
             )}
           </div>
-        </section>
+        </Section>
 
-        <section className="sec-s" id="preus">
-          <Reveal>
-            <div className="eyebrow">Plans i preus</div>
-            <h2 className="sec-title">
-              Simple,
-              <br />
-              <em>transparent.</em>
-            </h2>
-          </Reveal>
+        <Section id="preus" variant="alt">
+          <SectionHead eyebrow="Plans i preus">
+            Simple,
+            <br />
+            <em>transparent.</em>
+          </SectionHead>
           <div className="price-grid">
             <Reveal>
               <div className="price-card">
@@ -366,22 +343,21 @@ export default function App() {
               </div>
             </Reveal>
           </div>
-        </section>
+        </Section>
 
-        <section className="sec" id="faq">
+        <Section id="faq">
           <div className="faq-layout">
-            <Reveal instant className="faq-sticky">
-              <div className="eyebrow">FAQ</div>
-              <h2 className="sec-title" style={{ marginBottom: 20 }}>
+            <div className="faq-sticky">
+              <SectionHead eyebrow="FAQ">
                 Preguntes
                 <br />
                 <em>freqüents</em>
-              </h2>
+              </SectionHead>
               <p className="faq-subdesc">
                 Tens alguna altra pregunta? Escriu-nos a{" "}
                 <a href="mailto:hola@4mae.app">hola@4mae.app</a> i et responem en menys de 24h.
               </p>
-            </Reveal>
+            </div>
             <div className="faq-list">
               {FAQS.map((f, i) => (
                 <FaqItem
@@ -394,7 +370,7 @@ export default function App() {
               ))}
             </div>
           </div>
-        </section>
+        </Section>
 
         <section className="cta" id="waitlist">
           <div className="cta-rings" aria-hidden>

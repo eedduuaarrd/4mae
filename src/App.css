@@ -455,18 +455,35 @@ nav.s {
 }
 
 /* SECTIONS */
-.sec {
+.sec,
+.sec-s,
+.sec-s2 {
+  position: relative;
+  z-index: 1;
   padding: var(--pad-sec) var(--pad-x);
+  width: 100%;
 }
 
 .sec-s {
-  padding: var(--pad-sec) var(--pad-x);
   background: var(--s1);
 }
 
 .sec-s2 {
-  padding: var(--pad-sec) var(--pad-x);
   background: var(--s2);
+}
+
+.sec-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sec-head {
+  margin-bottom: 48px;
+}
+
+.sec-head .sec-title {
+  margin-bottom: 0;
 }
 
 .eyebrow {
@@ -502,6 +519,13 @@ nav.s {
 }
 
 /* PROBLEM */
+.prob-grid,
+.steps,
+.wear-grid,
+.test-grid {
+  align-items: stretch;
+}
+
 .prob-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1707,26 +1731,23 @@ footer {
 .wear-grid > .reveal,
 .test-grid > .reveal,
 .price-grid > .reveal {
-  display: contents;
+  display: flex;
+  min-width: 0;
+  height: 100%;
 }
 
-.prob-grid > .reveal > *,
-.steps > .reveal > *,
-.wear-grid > .reveal > *,
-.test-grid > .reveal > *,
-.price-grid > .reveal > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.25s;
+.prob-grid > .reveal > .pc,
+.steps > .reveal > .step,
+.wear-grid > .reveal > .wc,
+.test-grid > .reveal > .tc,
+.price-grid > .reveal > .price-card {
+  flex: 1;
+  width: 100%;
 }
 
-.prob-grid > .reveal.in > *,
-.steps > .reveal.in > *,
-.wear-grid > .reveal.in > *,
-.test-grid > .reveal.in > *,
-.price-grid > .reveal.in > * {
-  opacity: 1;
-  transform: translateY(0);
+.plan-l > .reveal {
+  display: block;
+  min-width: 0;
 }
 
 .lf.animate {
@@ -1871,11 +1892,6 @@ footer {
   }
 
   .reveal,
-  .prob-grid > .reveal > *,
-  .steps > .reveal > *,
-  .wear-grid > .reveal > *,
-  .test-grid > .reveal > *,
-  .price-grid > .reveal > *,
   .h-eyebrow,
   .h1,
   .h-sub,

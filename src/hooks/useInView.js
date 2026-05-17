@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useInView({ threshold = 0.15, rootMargin = "0px", once = true } = {}) {
+export function useInView({
+  threshold = 0.12,
+  rootMargin = "0px 0px -60px 0px",
+  once = true,
+} = {}) {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
 

@@ -1,4 +1,5 @@
 export const NAV_LINKS = [
+  { id: "problema", label: "El problema" },
   { id: "com-funciona", label: "Com funciona" },
   { id: "pla", label: "El pla" },
   { id: "integracions", label: "Integracions" },
