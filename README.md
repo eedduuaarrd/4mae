@@ -28,6 +28,12 @@ Per enviar emails a un servei extern, crea `.env`:
 VITE_WAITLIST_ENDPOINT=https://formspree.io/f/el_teu_id
 ```
 
+## Deploy (Vercel)
+
+Connecta el repositori a Vercel i deixa el build per defecte (`npm run build` → `dist`).
+
+**Important:** no defineixis `VITE_BASE_PATH=/4mae/` a les variables d'entorn de Vercel. Aquest valor és només per GitHub Pages; a l'arrel del domini els assets han d'anar a `/assets/...`, no a `/4mae/assets/...`.
+
 ## Deploy (GitHub Pages)
 
 ```bash
@@ -35,7 +41,7 @@ npm run build:pages
 npm run preview:pages
 ```
 
-El workflow `.github/workflows/deploy.yml` publica automàticament a **https://eedduuaarrd.github.io/4mae/**
+El workflow `.github/workflows/deploy.yml` publica automàticament a **https://eedduuaarrd.github.io/4mae/** (amb `VITE_BASE_PATH=/4mae/` al build).
 
 Al repositori de GitHub: **Settings → Pages → Build and deployment → GitHub Actions**.
 
